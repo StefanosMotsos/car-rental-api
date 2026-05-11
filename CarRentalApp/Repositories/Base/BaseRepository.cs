@@ -1,0 +1,42 @@
+﻿using CarRentalApp.Data;
+using Microsoft.EntityFrameworkCore;
+
+namespace CarRentalApp.Repositories.Base
+{
+    public class BaseRepository<T> : IBaseRepository<T> where T : class
+    {
+        protected readonly CarRentalDbContext _context;
+        protected readonly DbSet<T> _dbSet;
+
+        public BaseRepository(CarRentalDbContext context)
+        {
+            _context = context;
+            _dbSet= _context.Set<T>();
+        }
+
+        public virtual async Task AddSync(T entity) => await _dbSet.AddAsync(entity);
+
+        public virtual async Task AddRangeAsync(IEnumerable<T> entities) => await _dbSet.AddRangeAsync(entities);
+
+        public virtual Task UpdateAsync(T entity)
+        {
+            _dbSet.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            return Task.CompletedTask;
+        }
+
+        public virtual async Task<bool> DeleteAsync(T entity)
+        {
+            T? existingEntity = await _dbSet.FindAsync(entity);
+            if (existingEntity is null) return false;
+            _dbSet.Remove(existingEntity);
+            return true;
+        }
+
+        public virtual async Task<T?> GetByIdAsync(int id) => await _dbSet.FindAsync(id);
+
+        public virtual async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.ToListAsync();
+
+        public virtual async Task<int> GetCountAsync() => await _dbSet.CountAsync();
+    }
+}

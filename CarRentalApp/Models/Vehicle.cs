@@ -5,6 +5,7 @@ namespace CarRentalApp.Models
     public class Vehicle : BaseEntity
     {
         public int Id { get; set; }
+        public string Make { get; set; } = null!;
         public string Model { get; set; } = null!;
         public int Year { get; set; }
         public string LicensePlate { get; set; } = null!;

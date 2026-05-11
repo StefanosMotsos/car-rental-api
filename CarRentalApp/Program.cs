@@ -1,5 +1,6 @@
 
 using CarRentalApp.Data;
+using CarRentalApp.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalApp
@@ -14,6 +15,8 @@ namespace CarRentalApp
 
             builder.Services.AddDbContext<CarRentalDbContext>(options =>
                     options.UseSqlServer(connString));
+
+            builder.Services.AddRepositories();
 
             // Add services to the container.
 

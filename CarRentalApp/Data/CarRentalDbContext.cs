@@ -96,7 +96,8 @@ namespace CarRentalApp.Data
 
             modelBuilder.Entity<Vehicle>(en =>
             {
-                en.Property(p => p.Model).HasMaxLength(100);
+                en.Property(p => p.Make).HasMaxLength(50);
+                en.Property(p => p.Model).HasMaxLength(50);
                 en.Property(p => p.Year).HasColumnType("smallint");
                 en.Property(p => p.LicensePlate).HasMaxLength(20);
                 en.Property(p => p.DailyRate).HasColumnType("decimal(10,2)");
