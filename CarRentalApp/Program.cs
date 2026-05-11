@@ -1,6 +1,7 @@
 
 using CarRentalApp.Data;
 using CarRentalApp.Repositories;
+using CarRentalApp.Security;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -21,6 +22,8 @@ namespace CarRentalApp
 
             builder.Services.AddDbContext<CarRentalDbContext>(options =>
                     options.UseSqlServer(connString));
+
+            builder.Services.AddSingleton<IEncryptionUtil, EncryptionUtil>();
 
             builder.Services.AddRepositories();
 
