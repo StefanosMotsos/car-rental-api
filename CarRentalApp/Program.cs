@@ -2,6 +2,7 @@
 using CarRentalApp.Data;
 using CarRentalApp.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace CarRentalApp
 {
@@ -11,14 +12,17 @@ namespace CarRentalApp
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Host.UseSerilog((hostingContext, configuration) =>
+            {
+                configuration.ReadFrom.Configuration(hostingContext.Configuration);
+            });
+
             var connString = builder.Configuration.GetConnectionString("DevConnection");
 
             builder.Services.AddDbContext<CarRentalDbContext>(options =>
                     options.UseSqlServer(connString));
 
             builder.Services.AddRepositories();
-
-            // Add services to the container.
 
             builder.Services.AddControllers();
 
