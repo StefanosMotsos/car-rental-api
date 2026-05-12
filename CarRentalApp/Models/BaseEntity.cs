@@ -7,5 +7,7 @@
         public bool IsDeleted { get; set; } = false;
         public DateTime? DeletedAt { get; set; }
 
+        public Guid Uuid { get; set; } = Guid.NewGuid();
+
     }
 }

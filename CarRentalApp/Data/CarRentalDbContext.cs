@@ -46,6 +46,7 @@ namespace CarRentalApp.Data
 
             modelBuilder.Entity<User>(en =>
             {
+                en.Property(e => e.Uuid).HasDefaultValueSql("NEWID()");
                 en.Property(p => p.Username).HasMaxLength(50);
                 en.Property(p => p.Password).HasMaxLength(100);
                 en.Property(p => p.Email).HasMaxLength(50);
@@ -60,10 +61,12 @@ namespace CarRentalApp.Data
                 en.HasIndex(i => i.Username, "IX_Users_Username").IsUnique();
                 en.HasIndex(i => i.Email, "IX_Users_Email").IsUnique();
                 en.HasIndex(i => i.RoleId, "IX_Users_RoleId");
+                en.HasIndex(e => e.Uuid).IsUnique();
             });
 
             modelBuilder.Entity<Customer>(en =>
             {
+                en.Property(e => e.Uuid).HasDefaultValueSql("NEWID()");
                 en.Property(p => p.DriverLicense).HasMaxLength(20);
                 en.Property(p => p.DateOfBirth).HasColumnType("date");
                 en.HasOne(p => p.User).WithOne(p => p.Customer)
@@ -77,6 +80,7 @@ namespace CarRentalApp.Data
 
             modelBuilder.Entity<Employee>(en =>
             {
+                en.Property(e => e.Uuid).HasDefaultValueSql("NEWID()");
                 en.Property(p => p.PhoneNumber).HasMaxLength(20);
                 en.HasOne(p => p.User).WithOne(p => p.Employee)
                     .HasForeignKey<Employee>(p => p.UserId)
@@ -84,6 +88,7 @@ namespace CarRentalApp.Data
                     .HasConstraintName("FK_Employee_UserId");
 
                 en.HasIndex(i => i.UserId, "IX_Employee_UserId");
+                en.HasIndex(e => e.Uuid).IsUnique();
             });
 
             modelBuilder.Entity<Category>(en =>
@@ -96,6 +101,7 @@ namespace CarRentalApp.Data
 
             modelBuilder.Entity<Vehicle>(en =>
             {
+                en.Property(e => e.Uuid).HasDefaultValueSql("NEWID()");
                 en.Property(p => p.Make).HasMaxLength(50);
                 en.Property(p => p.Model).HasMaxLength(50);
                 en.Property(p => p.Year).HasColumnType("smallint");
@@ -112,10 +118,12 @@ namespace CarRentalApp.Data
                 en.HasIndex(i => i.LicensePlate, "UQ_Vehicles_LicensePlate").IsUnique();
                 en.HasIndex(i => i.CategoryId, "IX_Vehicles_CategoryId");
                 en.HasIndex(i => i.Status, "IX_Vehicles_Status");
+                en.HasIndex(e => e.Uuid).IsUnique();
             });
 
             modelBuilder.Entity<VehiclePhoto>(en =>
             {
+                en.Property(e => e.Uuid).HasDefaultValueSql("NEWID()");
                 en.Property(p => p.OriginalName).HasMaxLength(255);
                 en.Property(p => p.SavedName).HasMaxLength(255);
                 en.Property(p => p.FilePath).HasMaxLength(1024);
@@ -129,6 +137,7 @@ namespace CarRentalApp.Data
 
                 en.HasIndex(i => i.SavedName, "UQ_VehiclePhotos_SavedName").IsUnique();
                 en.HasIndex(i => i.VehicleId, "IX_VehiclePhotos_VehicleId").IsUnique();
+                en.HasIndex(e => e.Uuid).IsUnique();
             });
 
             modelBuilder.Entity<Location>(en =>
@@ -143,6 +152,7 @@ namespace CarRentalApp.Data
 
             modelBuilder.Entity<Rental>(en =>
             {
+                en.Property(e => e.Uuid).HasDefaultValueSql("NEWID()");
                 en.Property(p => p.StartDate).HasColumnType("date");
                 en.Property(p => p.EndDate).HasColumnType("date");
                 en.Property(p => p.TotalCost).HasColumnType("decimal(10,2)");
@@ -177,6 +187,7 @@ namespace CarRentalApp.Data
                 en.HasIndex(i => i.EmployeeId, "IX_Rentals_EmployeeId");
                 en.HasIndex(i => i.VehicleId, "IX_Rentals_VehicleId");
                 en.HasIndex(i => i.Status, "IX_Rentals_Status");
+                en.HasIndex(e => e.Uuid).IsUnique();
             });
 
 

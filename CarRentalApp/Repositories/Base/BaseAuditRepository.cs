@@ -1,5 +1,6 @@
 ﻿using CarRentalApp.Data;
 using CarRentalApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalApp.Repositories.Base
 {
@@ -18,5 +19,8 @@ namespace CarRentalApp.Repositories.Base
             entity.DeletedAt = DateTime.UtcNow;
             return true;
         }
+
+        public virtual async Task<T?> GetByUuidAsync(Guid uuid) =>
+            await _dbSet.FirstOrDefaultAsync(e => e.Uuid == uuid);
     }
 }
