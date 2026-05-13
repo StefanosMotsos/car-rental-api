@@ -1,4 +1,5 @@
 
+using CarRentalApp.Configuration;
 using CarRentalApp.Data;
 using CarRentalApp.Repositories;
 using CarRentalApp.Security;
@@ -22,6 +23,8 @@ namespace CarRentalApp
 
             builder.Services.AddDbContext<CarRentalDbContext>(options =>
                     options.UseSqlServer(connString));
+
+            builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MapperConfig>());
 
             builder.Services.AddSingleton<IEncryptionUtil, EncryptionUtil>();
 

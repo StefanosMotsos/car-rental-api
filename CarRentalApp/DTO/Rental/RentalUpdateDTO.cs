@@ -9,6 +9,6 @@ namespace CarRentalApp.DTO.Rental
              ErrorMessageResourceName = "Required")]
          public string? Status { get; set; }
 
-         public int? EmployeeUuid { get; set; }
+         public Guid? EmployeeUuid { get; set; }
     }
 }
