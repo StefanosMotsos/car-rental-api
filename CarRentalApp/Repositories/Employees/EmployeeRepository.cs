@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace CarRentalApp.Repositories.Employees
 {
-    public class EmployeeRepository : BaseRepository<Employee>, IEmployeeRepository
+    public class EmployeeRepository : BaseAuditRepository<Employee>, IEmployeeRepository
     {
         public EmployeeRepository(CarRentalDbContext context) : base(context)
         {
@@ -48,7 +48,7 @@ namespace CarRentalApp.Repositories.Employees
 
         public virtual async Task<Employee?> GetEmployeeByUserIdAsync(int userId)
         {
-            return await _dbSet.Include(c => c.UserId).FirstOrDefaultAsync(e => e.UserId == userId);
+            return await _dbSet.Include(c => c.User).FirstOrDefaultAsync(e => e.UserId == userId);
         }
     }
 }

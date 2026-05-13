@@ -14,7 +14,7 @@ namespace CarRentalApp.Repositories.Base
             _dbSet= _context.Set<T>();
         }
 
-        public virtual async Task AddSync(T entity) => await _dbSet.AddAsync(entity);
+        public virtual async Task AddAsync(T entity) => await _dbSet.AddAsync(entity);
 
         public virtual async Task AddRangeAsync(IEnumerable<T> entities) => await _dbSet.AddRangeAsync(entities);
 
@@ -25,9 +25,9 @@ namespace CarRentalApp.Repositories.Base
             return Task.CompletedTask;
         }
 
-        public virtual async Task<bool> DeleteAsync(T entity)
+        public virtual async Task<bool> DeleteAsync(int id)
         {
-            T? existingEntity = await _dbSet.FindAsync(entity);
+            T? existingEntity = await _dbSet.FindAsync(id);
             if (existingEntity is null) return false;
             _dbSet.Remove(existingEntity);
             return true;

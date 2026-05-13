@@ -31,6 +31,7 @@ namespace CarRentalApp.Repositories.Users
 
             var data = await query
                 .OrderBy(u => u.Id)
+                .Include(u => u.Role)
                 .Skip(skip)
                 .Take(pageSize)
                 .ToListAsync();
@@ -46,7 +47,8 @@ namespace CarRentalApp.Repositories.Users
 
         public virtual async Task<User?> GetUserByUsernameAsync(string username)
         {
-            return await _dbSet.FirstOrDefaultAsync(u => u.Username == username);
+            return await _dbSet.Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Username == username);
         }
     }
 }

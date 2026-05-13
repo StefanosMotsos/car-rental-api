@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace CarRentalApp.Repositories.Employees
 {
-    public interface IEmployeeRepository : IBaseRepository<Employee>
+    public interface IEmployeeRepository : IBaseAuditRepository<Employee>
     {
         Task<Employee?> GetEmployeeByUserIdAsync(int userId);
         Task<PaginatedResult<Employee>> GetPaginatedFilteredEmployeesAsync(int pageNumber, int pageSize,
