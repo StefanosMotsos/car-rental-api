@@ -27,6 +27,8 @@ namespace CarRentalApp
 
             builder.Services.AddRepositories();
 
+            builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
             builder.Services.AddControllers();
 
             var app = builder.Build();
@@ -36,6 +38,14 @@ namespace CarRentalApp
             {
                 
             }
+
+            var supportedCultures = new[] { "en", "el" };
+            app.UseRequestLocalization(options =>
+            {
+                options.SetDefaultCulture("en")
+                       .AddSupportedCultures(supportedCultures)
+                       .AddSupportedUICultures(supportedCultures);
+            });
 
             app.UseHttpsRedirection();
 
