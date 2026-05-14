@@ -24,15 +24,18 @@ namespace CarRentalApp
             builder.Services.AddDbContext<CarRentalDbContext>(options =>
                     options.UseSqlServer(connString));
 
-            builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MapperConfig>());
-
             builder.Services.AddSingleton<IEncryptionUtil, EncryptionUtil>();
 
             builder.Services.AddRepositories();
 
             builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
+            builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MapperConfig>());
+
             builder.Services.AddControllers();
+
+
+
 
             var app = builder.Build();
 
@@ -52,6 +55,7 @@ namespace CarRentalApp
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
