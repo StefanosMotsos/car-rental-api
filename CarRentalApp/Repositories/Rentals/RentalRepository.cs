@@ -77,7 +77,7 @@ namespace CarRentalApp.Repositories.Rentals
             };
         }
 
-        public virtual async Task<Rental?> GetRentalByIdAsync(int id)
+        public override async Task<Rental?> GetByUuidAsync(Guid uuid)
         {
             return await _dbSet
                 .Include(r => r.Customer)
@@ -85,7 +85,7 @@ namespace CarRentalApp.Repositories.Rentals
                 .Include(r => r.PickupLocation)
                 .Include(r => r.DropoffLocation)
                 .Include(r => r.Vehicle)
-                .FirstOrDefaultAsync(r => r.Id == id);
+                .FirstOrDefaultAsync(r => r.Uuid == uuid);
         }
     }
 }

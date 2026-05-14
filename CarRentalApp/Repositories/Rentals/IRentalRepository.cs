@@ -7,8 +7,6 @@ namespace CarRentalApp.Repositories.Rentals
 {
     public interface IRentalRepository : IBaseAuditRepository<Rental>
     {
-        Task<Rental?> GetRentalByIdAsync(int id);
-
         Task<PaginatedResult<Rental>> GetPaginatedFilteredRentalsAsync(int pageNumber, int pageSize,
             List<Expression<Func<Rental, bool>>> predicates);
 

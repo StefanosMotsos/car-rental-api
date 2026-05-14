@@ -47,12 +47,12 @@ namespace CarRentalApp.Repositories.Vehicles
             };
         }
 
-        public virtual async Task<Vehicle?> GetVehicleByIdAsync(int id)
+        public override async Task<Vehicle?> GetByUuidAsync(Guid uuid)
         {
             return await _dbSet
                 .Include(v => v.Category)
                 .Include(v => v.Photo)
-                .FirstOrDefaultAsync(v  => v.Id == id);
+                .FirstOrDefaultAsync(v  => v.Uuid == uuid);
         }
     }
 }

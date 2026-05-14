@@ -46,9 +46,12 @@ namespace CarRentalApp.Repositories.Employees
             };
         }
 
-        public virtual async Task<Employee?> GetEmployeeByUserIdAsync(int userId)
+        public override async Task<Employee?> GetByUuidAsync(Guid uuid)
         {
-            return await _dbSet.Include(c => c.User).FirstOrDefaultAsync(e => e.UserId == userId);
+            return await _dbSet
+                .Include(c => c.User)
+                    .ThenInclude(u => u.Role)
+                .FirstOrDefaultAsync(c => c.Uuid == uuid);
         }
     }
 }

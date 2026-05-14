@@ -9,6 +9,8 @@ namespace CarRentalApp.Repositories.Users
     {
         Task<User?> GetUserByUsernameAsync(string username);
 
+        Task<User?> GetUserByEmailAsync(string email);
+
         Task<PaginatedResult<User>> GetPaginatedFilteredUsersAsync(int pageNumber, int pageSize,
             List<Expression<Func<User, bool>>> predicates);
     }

@@ -1,9 +1,9 @@
 ﻿using CarRentalApp.Resources;
 using System.ComponentModel.DataAnnotations;
 
-namespace CarRentalApp.DTO
+namespace CarRentalApp.DTO.User
 {
-    public record EmployeeSignupDTO
+    public record CustomerSignupDTO
     {
         [Required(ErrorMessageResourceType = typeof(ErrorMessages),
             ErrorMessageResourceName = "Required")]
@@ -23,7 +23,7 @@ namespace CarRentalApp.DTO
 
         [Required(ErrorMessageResourceType = typeof(ErrorMessages),
             ErrorMessageResourceName = "Required")]
-        [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d)(?=.*?\W).{8,}$",
+        [RegularExpression(@"(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d)(?=.*?\W)^.{8,}$",
             ErrorMessageResourceType = typeof(ErrorMessages),
             ErrorMessageResourceName = "RegularExpression")]
         public string? Password { get; set; }
@@ -44,9 +44,13 @@ namespace CarRentalApp.DTO
 
         [Required(ErrorMessageResourceType = typeof(ErrorMessages),
             ErrorMessageResourceName = "Required")]
-        [StringLength(20, MinimumLength = 10,
+        public DateOnly? DateOfBirth { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(ErrorMessages),
+            ErrorMessageResourceName = "Required")]
+        [StringLength(20, MinimumLength = 5,
             ErrorMessageResourceType = typeof(ErrorMessages),
             ErrorMessageResourceName = "StringLength")]
-        public string? PhoneNumber { get; set; }
+        public string? DriverLicense { get; set; }
     }
 }

@@ -7,7 +7,6 @@ namespace CarRentalApp.Repositories.Vehicles
 {
     public interface IVehicleRepository : IBaseAuditRepository<Vehicle>
     {
-        Task<Vehicle?> GetVehicleByIdAsync(int id);
         Task<PaginatedResult<Vehicle>> GetPaginatedFilteredVehiclesAsync(int pageNumber, int pageSize,
             List<Expression<Func<Vehicle, bool>>> predicates);
     }

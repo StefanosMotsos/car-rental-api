@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CarRentalApp.DTO;
 using CarRentalApp.DTO.Lookup;
 using CarRentalApp.DTO.Rental;
 using CarRentalApp.DTO.User;
