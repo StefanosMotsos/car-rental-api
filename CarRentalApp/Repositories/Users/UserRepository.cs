@@ -56,5 +56,12 @@ namespace CarRentalApp.Repositories.Users
             return await _dbSet.Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Email == email);
         }
+
+        public override async Task<User?> GetByUuidAsync(Guid uuid)
+        {
+            return await _dbSet
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Uuid == uuid);
+        }
     }
 }
