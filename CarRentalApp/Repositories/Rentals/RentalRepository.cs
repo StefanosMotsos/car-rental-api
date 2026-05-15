@@ -1,6 +1,7 @@
 ﻿using CarRentalApp.Core;
 using CarRentalApp.Data;
 using CarRentalApp.Models;
+using CarRentalApp.Models.Enums;
 using CarRentalApp.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -86,6 +87,14 @@ namespace CarRentalApp.Repositories.Rentals
                 .Include(r => r.DropoffLocation)
                 .Include(r => r.Vehicle)
                 .FirstOrDefaultAsync(r => r.Uuid == uuid);
+        }
+
+        public virtual async Task<bool> HasOverlappingRentalAsync(int vehicleId, DateOnly startDate, DateOnly endDate)
+        {
+            return await _dbSet.AnyAsync(r =>
+                r.VehicleId == vehicleId &&
+                r.StartDate < endDate &&
+                r.EndDate > startDate);
         }
     }
 }

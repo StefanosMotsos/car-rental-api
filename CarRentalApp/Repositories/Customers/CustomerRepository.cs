@@ -53,5 +53,10 @@ namespace CarRentalApp.Repositories.Customers
                     .ThenInclude(u => u.Role)
                 .FirstOrDefaultAsync(c => c.Uuid == uuid);
         }
+
+        public async Task<Customer?> GetCustomerByDriverLicenseAsync(string driverLicense)
+        {
+            return await _dbSet.Include(c => c.User).FirstOrDefaultAsync(c => c.DriverLicense == driverLicense);
+        }
     }
 }

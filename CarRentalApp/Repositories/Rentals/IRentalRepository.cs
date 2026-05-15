@@ -11,5 +11,7 @@ namespace CarRentalApp.Repositories.Rentals
             List<Expression<Func<Rental, bool>>> predicates);
 
         Task<PaginatedResult<Rental>> GetPaginatedRentalsByCustomerIdAsync(int customerId, int pageNumber, int pageSize);
+
+        Task<bool> HasOverlappingRentalAsync(int vehicleId, DateOnly startDate, DateOnly endDate);
     }
 }

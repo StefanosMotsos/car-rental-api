@@ -9,5 +9,7 @@ namespace CarRentalApp.Repositories.Customers
     {
         Task<PaginatedResult<Customer>> GetPaginatedFilteredCustomersAsync(int pageNumber,  int pageSize, 
             List<Expression<Func<Customer, bool>>> predicates);
+
+        Task<Customer?> GetCustomerByDriverLicenseAsync(string driverLicense);
     }
 }

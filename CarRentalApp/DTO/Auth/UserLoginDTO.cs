@@ -18,7 +18,5 @@ namespace CarRentalApp.DTO
             ErrorMessageResourceType = typeof(ErrorMessages),
             ErrorMessageResourceName = "RegularExpression")]
         public string? Password { get; set; }
-
-        public bool KeepLoggedIn { get; set; }
     }
 }
