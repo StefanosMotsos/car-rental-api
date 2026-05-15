@@ -7,10 +7,7 @@ using CarRentalApp.Models;
 using CarRentalApp.Repositories;
 using CarRentalApp.Resources;
 using CarRentalApp.Security;
-using CarRentalApp.Services.Users;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-using System.Security.Claims;
 
 namespace CarRentalApp.Services.Customers
 {
@@ -38,7 +35,7 @@ namespace CarRentalApp.Services.Customers
             Customer customer = _mapper.Map<Customer>(dto);
             User user = _mapper.Map<User>(dto);
 
-            Role? role = await _unitOfWork.RoleRepository.GetByIdAsync(3);
+            Role? role = await _unitOfWork.RoleRepository.GetByIdAsync(3); //CUSTOMER role, seeded constant
             user.RoleId = role!.Id;
             user.Role = role;
 
@@ -97,6 +94,7 @@ namespace CarRentalApp.Services.Customers
             customer.User.IsDeleted = true;
             customer.User.DeletedAt = DateTime.UtcNow;
 
+            _logger.LogInformation("Customer with uuid {Uuid} was soft deleted successfully", uuid);
             await _unitOfWork.SaveChanges();
             return true;
         }
@@ -128,9 +126,9 @@ namespace CarRentalApp.Services.Customers
         }
 
         public async Task<PaginatedResult<CustomerReadOnlyDTO>> GetPaginatedFilteredActiveCustomersAsync(int pageNumber, int pageSize,
-            CustomerFiltersDTO dto)
+            CustomerFiltersDTO filters)
         {
-            var predicates = BuildCustomerPredicates(dto);
+            var predicates = BuildCustomerPredicates(filters);
             predicates.Add(c => !c.IsDeleted);
 
             PaginatedResult<Customer> result = await _unitOfWork.CustomerRepository.GetPaginatedFilteredCustomersAsync(pageNumber, pageSize, predicates);
@@ -148,9 +146,9 @@ namespace CarRentalApp.Services.Customers
         }
 
         public async Task<PaginatedResult<CustomerReadOnlyDTO>> GetPaginatedFilteredCustomersAsync(int pageNumber, int pageSize, 
-            CustomerFiltersDTO dto)
+            CustomerFiltersDTO filters)
         {
-            var predicates = BuildCustomerPredicates(dto);
+            var predicates = BuildCustomerPredicates(filters);
 
             PaginatedResult<Customer> result = await _unitOfWork.CustomerRepository.GetPaginatedFilteredCustomersAsync(pageNumber, pageSize, predicates);
 
