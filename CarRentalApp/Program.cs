@@ -3,6 +3,7 @@ using CarRentalApp.Configuration;
 using CarRentalApp.Data;
 using CarRentalApp.Repositories;
 using CarRentalApp.Security;
+using CarRentalApp.Services;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -27,6 +28,8 @@ namespace CarRentalApp
             builder.Services.AddSingleton<IEncryptionUtil, EncryptionUtil>();
 
             builder.Services.AddRepositories();
+
+            builder.Services.AddServices();
 
             builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
