@@ -13,5 +13,7 @@ namespace CarRentalApp.Repositories.Rentals
         Task<PaginatedResult<Rental>> GetPaginatedRentalsByCustomerIdAsync(int customerId, int pageNumber, int pageSize);
 
         Task<bool> HasOverlappingRentalAsync(int vehicleId, DateOnly startDate, DateOnly endDate);
+
+        Task<bool> HasActiveRentalsForVehicleAsync(int vehicleId);
     }
 }

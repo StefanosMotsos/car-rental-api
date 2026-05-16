@@ -93,6 +93,8 @@ namespace CarRentalApp.Services.Customers
             customer.DeletedAt = DateTime.UtcNow;
             customer.User.IsDeleted = true;
             customer.User.DeletedAt = DateTime.UtcNow;
+            customer.ModifiedAt = DateTime.UtcNow;
+            customer.User.ModifiedAt = DateTime.UtcNow;
 
             _logger.LogInformation("Customer with uuid {Uuid} was soft deleted successfully", uuid);
             await _unitOfWork.SaveChanges();

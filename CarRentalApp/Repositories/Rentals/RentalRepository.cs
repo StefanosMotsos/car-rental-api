@@ -96,5 +96,13 @@ namespace CarRentalApp.Repositories.Rentals
                 r.StartDate < endDate &&
                 r.EndDate > startDate);
         }
+
+        public virtual async Task<bool> HasActiveRentalsForVehicleAsync(int vehicleId)
+        {
+            return await _dbSet.AnyAsync(r =>
+                r.VehicleId == vehicleId &&
+                r.Status == RentalStatus.Pending ||
+                r.Status == RentalStatus.Approved);
+        }
     }
 }

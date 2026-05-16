@@ -1,4 +1,5 @@
-﻿using CarRentalApp.Resources;
+﻿using CarRentalApp.Models.Enums;
+using CarRentalApp.Resources;
 using System.ComponentModel.DataAnnotations;
 
 namespace CarRentalApp.DTO.Rental
@@ -7,7 +8,7 @@ namespace CarRentalApp.DTO.Rental
     {
          [Required(ErrorMessageResourceType = typeof(ErrorMessages),
              ErrorMessageResourceName = "Required")]
-         public string? Status { get; set; }
+         public RentalStatus? Status { get; set; }
 
          public Guid? EmployeeUuid { get; set; }
     }

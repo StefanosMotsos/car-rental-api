@@ -54,5 +54,10 @@ namespace CarRentalApp.Repositories.Vehicles
                 .Include(v => v.Photo)
                 .FirstOrDefaultAsync(v  => v.Uuid == uuid);
         }
+
+        public async Task<Vehicle?> GetVehicleByLicensePlateAsync(string licensePlate)
+        {
+            return await _dbSet.Include(v => v.Category).Include(v => v.Photo).FirstOrDefaultAsync(v => v.LicensePlate == licensePlate);
+        }
     }
 }

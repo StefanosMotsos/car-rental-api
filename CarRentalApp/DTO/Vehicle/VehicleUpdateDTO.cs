@@ -47,6 +47,10 @@ namespace CarRentalApp.DTO.Vehicle
 
         [Required(ErrorMessageResourceType = typeof(ErrorMessages),
             ErrorMessageResourceName = "Required")]
+        public VehicleStatus? Status { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(ErrorMessages),
+            ErrorMessageResourceName = "Required")]
         public int? CategoryId { get; set; }
     }
 }

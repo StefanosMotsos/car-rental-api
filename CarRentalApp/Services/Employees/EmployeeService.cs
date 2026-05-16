@@ -86,9 +86,11 @@ namespace CarRentalApp.Services.Employees
             employee.DeletedAt = DateTime.UtcNow;
             employee.User.IsDeleted = true;
             employee.User.DeletedAt = DateTime.UtcNow;
+            employee.ModifiedAt = DateTime.UtcNow;
+            employee.User.ModifiedAt = DateTime.UtcNow;
 
-            _logger.LogInformation("Employee with uuid {Uuid} was soft deleted successfully", uuid);
             await _unitOfWork.SaveChanges();
+            _logger.LogInformation("Employee with uuid {Uuid} was soft deleted successfully", uuid);
             return true;
         }
 

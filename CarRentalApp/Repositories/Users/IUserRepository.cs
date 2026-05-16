@@ -13,5 +13,7 @@ namespace CarRentalApp.Repositories.Users
 
         Task<PaginatedResult<User>> GetPaginatedFilteredUsersAsync(int pageNumber, int pageSize,
             List<Expression<Func<User, bool>>> predicates);
+
+        Task<User?> GetUserCustomerByIdAsync(int id);
     }
 }
