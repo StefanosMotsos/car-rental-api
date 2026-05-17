@@ -8,7 +8,11 @@ using CarRentalApp.Models;
 using CarRentalApp.Repositories;
 using CarRentalApp.Resources;
 using CarRentalApp.Security;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq.Expressions;
+using System.Security.Claims;
+using System.Text;
 
 namespace CarRentalApp.Services.Users
 {
@@ -88,6 +92,32 @@ namespace CarRentalApp.Services.Users
 
             _logger.LogInformation("User with username {Username} verified for login", credentials.Username);
             return user;
+        }
+
+        public string CreateUserToken(User user)
+        {
+            var secretKey = _configuration["Jwt:Secret"]!;
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+            var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claimsInfo = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Role.Name),
+                new Claim("uuid", user.Uuid.ToString())
+            };
+
+            var jwtSecurityToken = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claimsInfo,
+                expires: DateTime.UtcNow.AddHours(3),
+                signingCredentials: signingCredentials
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
         }
     }
 }

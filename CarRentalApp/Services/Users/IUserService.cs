@@ -11,5 +11,7 @@ namespace CarRentalApp.Services.Users
         Task<User> VerifyAndGetUserAsync(UserLoginDTO credentials);
         Task<UserReadOnlyDTO> GetUserByUuidAsync(Guid uuid);
         Task<PaginatedResult<UserReadOnlyDTO>> GetUsersPaginatedFilteredAsync(int pageNumber, int pageSize, UserFiltersDTO filters);
+
+        string CreateUserToken(User user);
     }
 }

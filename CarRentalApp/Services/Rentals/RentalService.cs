@@ -78,6 +78,12 @@ namespace CarRentalApp.Services.Rentals
                 rental.Vehicle.Status = VehicleStatus.Available;
             }
 
+            if (dto.Status == RentalStatus.Approved)
+            {
+                int days = rental.EndDate.DayNumber - rental.StartDate.DayNumber;
+                rental.TotalCost = days * rental.Vehicle.DailyRate;
+            }
+
             rental.Status = dto.Status!.Value;
             rental.Employee = employee;
             rental.EmployeeId = employee.Id;
