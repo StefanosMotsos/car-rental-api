@@ -11,11 +11,11 @@ namespace CarRentalApp.Controllers
 {
     [Route("api/v1/vehicles")]
     [ApiController]
-    public class VehicleController : ControllerBase
+    public class VehiclesController : ControllerBase
     {
         private readonly IApplicationService _applicationService;
 
-        public VehicleController(IApplicationService applicationService)
+        public VehiclesController(IApplicationService applicationService)
         {
             _applicationService = applicationService;
         }
@@ -86,13 +86,14 @@ namespace CarRentalApp.Controllers
         /// </summary>
         [HttpPost("{uuid}/photo")]
         [Authorize(Roles = "ADMIN,EMPLOYEE")]
+        [Consumes("multipart/form-data")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> UploadVehiclePhoto(Guid uuid,[FromForm] IFormFile photo)
+        public async Task<ActionResult> UploadVehiclePhoto(Guid uuid, [FromForm] VehiclePhotoUploadRequest request)
         {
-            await _applicationService.VehicleService.SaveVehiclePhoto(uuid, photo);
+            await _applicationService.VehicleService.SaveVehiclePhoto(uuid, request.Photo);
 
             return NoContent();
         }
