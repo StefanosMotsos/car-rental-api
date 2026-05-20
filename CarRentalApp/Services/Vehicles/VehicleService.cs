@@ -225,6 +225,10 @@ namespace CarRentalApp.Services.Vehicles
         {
             List<Expression<Func<Vehicle, bool>>> predicates = [];
 
+            if (!string.IsNullOrEmpty(filters.Search))
+                predicates.Add(v => v.Make.Contains(filters.Search) || v.Model.Contains(filters.Search));
+
+            if (!string.IsNullOrEmpty(filters.LicensePlate)) predicates.Add(v => v.LicensePlate.Contains(filters.LicensePlate));
             if (!string.IsNullOrEmpty(filters.Make)) predicates.Add(v => v.Make == filters.Make);
             if (!string.IsNullOrEmpty(filters.Model)) predicates.Add(v => v.Model == filters.Model);
             if (filters.MinYear.HasValue) predicates.Add(v => v.Year >= filters.MinYear.Value);

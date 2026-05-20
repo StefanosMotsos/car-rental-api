@@ -238,9 +238,10 @@ namespace CarRentalApp.Services.Customers
         {
             List<Expression<Func<Customer, bool>>> predicates = [];
 
-            if(!string.IsNullOrEmpty(filters.Firstname)) predicates.Add(c => c.User.Firstname == filters.Firstname);
-            if(!string.IsNullOrEmpty(filters.Lastname)) predicates.Add(c => c.User.Lastname == filters.Lastname);
-            if(!string.IsNullOrEmpty(filters.Email)) predicates.Add(c => c.User.Email == filters.Email);
+            if (!string.IsNullOrEmpty(filters.Username)) predicates.Add(c => c.User.Username == filters.Username);
+            if (!string.IsNullOrEmpty(filters.Firstname)) predicates.Add(c => c.User.Firstname == filters.Firstname);
+            if (!string.IsNullOrEmpty(filters.Lastname)) predicates.Add(c => c.User.Lastname.Contains(filters.Lastname));
+            if (!string.IsNullOrEmpty(filters.Email)) predicates.Add(c => c.User.Email == filters.Email);
             if(!string.IsNullOrEmpty(filters.DriverLicenceNumber)) predicates.Add(c => c.DriverLicense == filters.DriverLicenceNumber);
 
             return predicates;

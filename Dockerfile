@@ -8,7 +8,7 @@ RUN dotnet restore CarRentalApp/CarRentalApp.csproj
 COPY CarRentalApp/ CarRentalApp/
 
 WORKDIR /src/CarRentalApp
-RUN dotnet publich -c Release -o /app
+RUN dotnet publish -c Release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app

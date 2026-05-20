@@ -4,6 +4,8 @@ namespace CarRentalApp.Core.Filters
 {
     public class VehicleFiltersDTO
     {
+        public string? Search { get; set; }
+        public string? LicensePlate { get; set; }
         public string? Make { get; set; }
         public string? Model { get; set; }
         public short? MinYear { get; set; }
