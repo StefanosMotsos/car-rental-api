@@ -14,7 +14,7 @@ namespace CarRentalApp.Services.Customers
         Task<bool> DeleteCustomerByUuidAsync(Guid uuid);
 
         Task<CustomerReadOnlyDTO> GetCustomerByUuidAsync(Guid uuid);
-        Task<CustomerReadOnlyDTO> GetActiveCustomerByUuidAsync(Guid uuid);
+        Task<CustomerReadOnlyDTO> GetActiveCustomerByUserIdAsync(int userId);
 
         Task<PaginatedResult<CustomerReadOnlyDTO>> GetPaginatedFilteredCustomersAsync(int pageNumber, int pageSize,
             CustomerFiltersDTO dto);

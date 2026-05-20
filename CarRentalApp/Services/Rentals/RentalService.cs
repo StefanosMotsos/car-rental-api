@@ -92,21 +92,17 @@ namespace CarRentalApp.Services.Rentals
             return _mapper.Map<RentalReadOnlyDTO>(rental);
         }
 
-        public async Task<PaginatedResult<RentalReadOnlyDTO>> CustomerRentalHistoryAsync(Guid uuid, int callerUserId, int pageNumber, 
+        public async Task<PaginatedResult<RentalReadOnlyDTO>> CustomerRentalHistoryAsync(int callerUserId, int pageNumber, 
             int pageSize, RentalFiltersDTO filters)
         {
-            Customer? customer = await _unitOfWork.CustomerRepository.GetByUuidAsync(uuid);
-            if (customer == null)
+            User? user = await _unitOfWork.UserRepository.GetUserCustomerByIdAsync(callerUserId);
+            if (user == null || user.Customer == null)
             {
-                _logger.LogWarning("Customer with uuid {Uuid} was not found", uuid);
+                _logger.LogWarning("Customer with userId {UserId} was not found", callerUserId);
                 throw new EntityNotFoundException("Customer", ErrorMessages.NotFound);
             }
 
-            if (customer.UserId != callerUserId)
-            {
-                _logger.LogWarning("Customer with userId {UserId} is not allowed to access this resource", callerUserId);
-                throw new EntityForbiddenException("Customer", ErrorMessages.Forbidden);
-            }
+            Customer customer = user.Customer;
 
             var predicates = BuildRentalPredicates(filters);
             predicates.Add(r => r.CustomerId == customer.Id);

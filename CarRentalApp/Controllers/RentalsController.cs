@@ -64,11 +64,10 @@ namespace CarRentalApp.Controllers
             [FromQuery] int pageSize = 10,
             [FromQuery] RentalFiltersDTO? filters = null)
         {
-            Guid customerUuid = Guid.Parse(User.FindFirstValue("uuid")!);
             int callerUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
             var rentalHistory = await _applicationService.RentalService
-                .CustomerRentalHistoryAsync(customerUuid, callerUserId, pageNumber, pageSize, filters ?? new RentalFiltersDTO());
+                .CustomerRentalHistoryAsync(callerUserId, pageNumber, pageSize, filters ?? new RentalFiltersDTO());
 
             return Ok(rentalHistory);
         }

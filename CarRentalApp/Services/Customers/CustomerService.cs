@@ -101,17 +101,17 @@ namespace CarRentalApp.Services.Customers
             return true;
         }
 
-        public async Task<CustomerReadOnlyDTO> GetActiveCustomerByUuidAsync(Guid uuid)
+        public async Task<CustomerReadOnlyDTO> GetActiveCustomerByUserIdAsync(int userId)
         {
-            Customer? customer = await _unitOfWork.CustomerRepository.GetByUuidAsync(uuid);
-            if (customer is null || customer.IsDeleted)
+            User? user = await _unitOfWork.UserRepository.GetUserCustomerByIdAsync(userId);
+            if (user == null || user.Customer == null || user.Customer.IsDeleted)
             {
-                _logger.LogWarning("Customer with uuid {Uuid} was not found", uuid);
+                _logger.LogWarning("Customer with userId {UserId} was not found", userId);
                 throw new EntityNotFoundException("Customer", ErrorMessages.NotFound);
             }
 
-            _logger.LogInformation("Active Customer with uuid {Uuid} was fetched successfully!", uuid);
-            return _mapper.Map<CustomerReadOnlyDTO>(customer.User);
+            _logger.LogInformation("Customer with userId {UserId} was fetched successfully!", userId);
+            return _mapper.Map<CustomerReadOnlyDTO>(user.Customer.User);
         }
 
         public async Task<CustomerReadOnlyDTO> GetCustomerByUuidAsync(Guid uuid)
