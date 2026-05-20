@@ -185,7 +185,7 @@ namespace CarRentalApp.Services.Vehicles
             VehicleFiltersDTO filters)
         {
             var predicates = BuildVehiclePredicates(filters);
-            predicates.Add(v => v.Status == VehicleStatus.Available);
+            predicates.Add(v => v.Status == VehicleStatus.Available && !v.IsDeleted);
 
             PaginatedResult<Vehicle> result = await _unitOfWork.VehicleRepository.GetPaginatedFilteredVehiclesAsync(pageNumber, pageSize, predicates);
 

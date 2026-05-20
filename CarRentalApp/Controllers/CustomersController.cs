@@ -25,7 +25,7 @@ namespace CarRentalApp.Controllers
         /// Get the authenticated Customer's profile.
         /// </summary>
         [HttpGet("me")]
-        [Authorize]
+        [Authorize(Roles = "CUSTOMER")]
         [ProducesResponseType(typeof(CustomerReadOnlyDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CustomerReadOnlyDTO>> GetCustomerByUserId()

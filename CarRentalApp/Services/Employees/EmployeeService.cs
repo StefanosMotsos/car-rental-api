@@ -127,7 +127,7 @@ namespace CarRentalApp.Services.Employees
 
             var dtoResult = new PaginatedResult<EmployeeReadOnlyDTO>()
             {
-                Data = _mapper.Map<List<EmployeeReadOnlyDTO>>(result.Data),
+                Data = _mapper.Map<List<EmployeeReadOnlyDTO>>(result.Data.Select(c => c.User).ToList()),
                 TotalRecords = result.TotalRecords,
                 PageNumber = result.PageNumber,
                 PageSize = result.PageSize,
@@ -145,7 +145,7 @@ namespace CarRentalApp.Services.Employees
 
             var dtoResult = new PaginatedResult<EmployeeReadOnlyDTO>()
             {
-                Data = _mapper.Map<List<EmployeeReadOnlyDTO>>(result.Data),
+                Data = _mapper.Map<List<EmployeeReadOnlyDTO>>(result.Data.Select(c => c.User).ToList()),
                 TotalRecords = result.TotalRecords,
                 PageNumber = result.PageNumber,
                 PageSize = result.PageSize,

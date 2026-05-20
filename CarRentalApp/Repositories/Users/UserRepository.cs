@@ -5,6 +5,7 @@ using CarRentalApp.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
+
 namespace CarRentalApp.Repositories.Users
 {
     public class UserRepository : BaseAuditRepository<User>, IUserRepository
@@ -66,7 +67,10 @@ namespace CarRentalApp.Repositories.Users
 
         public virtual async Task<User?> GetUserCustomerByIdAsync(int id)
         {
-            return await _dbSet.Include(u => u.Customer).FirstOrDefaultAsync(u => u.Id == id);
+            return await _dbSet
+                .Include(u => u.Customer)
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
     }
 }

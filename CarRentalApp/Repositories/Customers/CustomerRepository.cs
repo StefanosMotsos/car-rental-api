@@ -32,7 +32,7 @@ namespace CarRentalApp.Repositories.Customers
 
             var data = await query
                 .OrderBy(c => c.Id)
-                .Include(c => c.User)
+                .Include(c => c.User).ThenInclude(u => u.Role)
                 .Skip(skip)
                 .Take(pageSize)
                 .ToListAsync();

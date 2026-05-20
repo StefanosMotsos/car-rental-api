@@ -2,15 +2,12 @@
 using CarRentalApp.Core;
 using CarRentalApp.Core.Filters;
 using CarRentalApp.DTO.Rental;
-using CarRentalApp.DTO.User;
 using CarRentalApp.Exceptions;
 using CarRentalApp.Models;
 using CarRentalApp.Models.Enums;
 using CarRentalApp.Repositories;
 using CarRentalApp.Resources;
 using CarRentalApp.Security;
-using CarRentalApp.Services.Customers;
-using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 
 namespace CarRentalApp.Services.Rentals
@@ -157,7 +154,7 @@ namespace CarRentalApp.Services.Rentals
                 throw new EntityNotFoundException("Vehicle", ErrorMessages.NotFound);
             }
 
-            if (vehicle.Status != VehicleStatus.Available)
+            if (vehicle.IsDeleted || vehicle.Status != VehicleStatus.Available)
             {
                 _logger.LogWarning("Vehicle with uuid {Uuid} not available for renting", vehicleUuid);
                 throw new InvalidArgumentException("Vehicle", ErrorMessages.InvalidArgument);

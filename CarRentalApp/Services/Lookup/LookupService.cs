@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using CarRentalApp.DTO.Lookup;
 using CarRentalApp.Repositories;
-using CarRentalApp.Security;
-using CarRentalApp.Services.Customers;
 
 namespace CarRentalApp.Services.Lookup
 {
