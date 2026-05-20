@@ -1,4 +1,3 @@
-
 using CarRentalApp.Configuration;
 using CarRentalApp.Data;
 using CarRentalApp.Helpers;

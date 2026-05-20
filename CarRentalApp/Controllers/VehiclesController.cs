@@ -1,4 +1,5 @@
-﻿using CarRentalApp.Core.Filters;
+﻿using CarRentalApp.Core;
+using CarRentalApp.Core.Filters;
 using CarRentalApp.DTO.Vehicle;
 using CarRentalApp.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -27,8 +28,8 @@ namespace CarRentalApp.Controllers
         /// <returns></returns>
         [HttpGet]
         [Authorize]
-        [ProducesResponseType(typeof (List<VehicleReadOnlyDTO>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<VehicleReadOnlyDTO>>> GetVehicles(
+        [ProducesResponseType(typeof (PaginatedResult<VehicleReadOnlyDTO>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<PaginatedResult<VehicleReadOnlyDTO>>> GetVehicles(
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10,
             [FromQuery] VehicleFiltersDTO? filters = null)
