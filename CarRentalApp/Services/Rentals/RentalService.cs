@@ -2,6 +2,7 @@
 using CarRentalApp.Core;
 using CarRentalApp.Core.Filters;
 using CarRentalApp.DTO.Rental;
+using CarRentalApp.DTO.User;
 using CarRentalApp.Exceptions;
 using CarRentalApp.Models;
 using CarRentalApp.Models.Enums;
@@ -9,6 +10,7 @@ using CarRentalApp.Repositories;
 using CarRentalApp.Resources;
 using CarRentalApp.Security;
 using CarRentalApp.Services.Customers;
+using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 
 namespace CarRentalApp.Services.Rentals
@@ -66,8 +68,11 @@ namespace CarRentalApp.Services.Rentals
                 throw new EntityNotFoundException("Rental", ErrorMessages.NotFound);
             }
 
+            if (dto.EmployeeUuid == null)
+                throw new InvalidArgumentException("Rental", ErrorMessages.InvalidArgument);
+
             Employee? employee = await _unitOfWork.EmployeeRepository.GetByUuidAsync(dto.EmployeeUuid!.Value);
-            if (employee == null)
+            if (employee == null || employee.IsDeleted)
             {
                 _logger.LogWarning("Employee with uuid {Uuid} was not found", uuid);
                 throw new EntityNotFoundException("Employee", ErrorMessages.NotFound);
@@ -87,8 +92,10 @@ namespace CarRentalApp.Services.Rentals
             rental.Status = dto.Status!.Value;
             rental.Employee = employee;
             rental.EmployeeId = employee.Id;
+            rental.ModifiedAt = DateTime.UtcNow;
+
             await _unitOfWork.SaveChanges();
-            _logger.LogInformation($"Updated Rental is now {dto.Status}");
+            _logger.LogInformation("Updated Rental {Uuid} is now {Status}", uuid, dto.Status);
             return _mapper.Map<RentalReadOnlyDTO>(rental);
         }
 
@@ -168,7 +175,14 @@ namespace CarRentalApp.Services.Rentals
             }
 
             Customer? customer = user.Customer;
-            return customer!;
+
+            if (customer == null)
+            {
+                _logger.LogWarning("User with userId {UserId} has no linked Customer", callerUserId);
+                throw new EntityNotFoundException("Customer", ErrorMessages.NotFound);
+            }
+
+            return customer;
         }
 
         private async Task<Location> ValidateAndGetLocationAsync(int locationId)

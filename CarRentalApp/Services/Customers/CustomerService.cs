@@ -41,8 +41,6 @@ namespace CarRentalApp.Services.Customers
 
             user.Customer = customer;
             user.Password = _encryptionUtil.Encrypt(user.Password);
-            user.ModifiedAt = DateTime.UtcNow;
-            customer.ModifiedAt = DateTime.UtcNow;
 
             await _unitOfWork.UserRepository.AddAsync(user);
             await _unitOfWork.SaveChanges();

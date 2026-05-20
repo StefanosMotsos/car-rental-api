@@ -28,7 +28,7 @@ namespace CarRentalApp.Controllers
         [Authorize]
         [ProducesResponseType(typeof(CustomerReadOnlyDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<CustomerReadOnlyDTO>> GetCustomerByUuid(Guid uuid)
+        public async Task<ActionResult<CustomerReadOnlyDTO>> GetCustomerByUserId()
         {
             int callerUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 

@@ -4,6 +4,7 @@ using CarRentalApp.Models;
 using CarRentalApp.Models.Enums;
 using CarRentalApp.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Linq.Expressions;
 
 namespace CarRentalApp.Repositories.Rentals
@@ -33,8 +34,8 @@ namespace CarRentalApp.Repositories.Rentals
 
             var data = await query
                 .OrderBy(r => r.Id)
-                .Include(r => r.Customer)
-                .Include(r => r.Employee)
+                .Include(r => r.Customer).ThenInclude(c => c.User)
+                .Include(r => r.Employee).ThenInclude(e => e!.User)
                 .Include(r => r.PickupLocation)
                 .Include(r => r.DropoffLocation)
                 .Include(r => r.Vehicle)
@@ -61,7 +62,7 @@ namespace CarRentalApp.Repositories.Rentals
 
             var data = await query
                 .OrderBy(r => r.Id)
-                .Include(r => r.Employee)
+                .Include(r => r.Employee).ThenInclude(e => e!.User)
                 .Include(r => r.PickupLocation)
                 .Include(r => r.DropoffLocation)
                 .Include(r => r.Vehicle)
@@ -81,8 +82,8 @@ namespace CarRentalApp.Repositories.Rentals
         public override async Task<Rental?> GetByUuidAsync(Guid uuid)
         {
             return await _dbSet
-                .Include(r => r.Customer)
-                .Include(r => r.Employee)
+                .Include(r => r.Customer).ThenInclude(c => c.User)
+                .Include(r => r.Employee).ThenInclude(e => e!.User)
                 .Include(r => r.PickupLocation)
                 .Include(r => r.DropoffLocation)
                 .Include(r => r.Vehicle)
@@ -101,8 +102,7 @@ namespace CarRentalApp.Repositories.Rentals
         {
             return await _dbSet.AnyAsync(r =>
                 r.VehicleId == vehicleId &&
-                r.Status == RentalStatus.Pending ||
-                r.Status == RentalStatus.Approved);
+                (r.Status == RentalStatus.Pending || r.Status == RentalStatus.Approved));
         }
     }
 }

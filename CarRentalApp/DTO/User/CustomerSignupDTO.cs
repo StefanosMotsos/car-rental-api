@@ -23,7 +23,7 @@ namespace CarRentalApp.DTO.User
 
         [Required(ErrorMessageResourceType = typeof(ErrorMessages),
             ErrorMessageResourceName = "Required")]
-        [RegularExpression(@"(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d)(?=.*?\W)^.{8,}$",
+        [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d)(?=.*?\W).{8,}$",
             ErrorMessageResourceType = typeof(ErrorMessages),
             ErrorMessageResourceName = "RegularExpression")]
         public string? Password { get; set; }

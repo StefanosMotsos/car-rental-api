@@ -48,7 +48,6 @@ namespace CarRentalApp.Services.Vehicles
             Vehicle vehicle = _mapper.Map<Vehicle>(dto);
             vehicle.Category = category;
             vehicle.Status = VehicleStatus.Available;
-            vehicle.ModifiedAt = DateTime.UtcNow;
 
             await _unitOfWork.VehicleRepository.AddAsync(vehicle);
             await _unitOfWork.SaveChanges();
@@ -178,7 +177,6 @@ namespace CarRentalApp.Services.Vehicles
                 throw new EntityNotFoundException("Vehicle", ErrorMessages.NotFound);
             }
 
-            await _unitOfWork.SaveChanges();
             _logger.LogInformation("Vehicle with uuid {Uuid} was fetched successfully", uuid);
             return _mapper.Map<VehicleReadOnlyDTO>(existingVehicle);
         }

@@ -47,7 +47,12 @@ namespace CarRentalApp.Configuration
             CreateMap<Rental, RentalReadOnlyDTO>()
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
                 .ForMember(dest => dest.PickupLocationName, opt => opt.MapFrom(src => src.PickupLocation.Name))
-                .ForMember(dest => dest.DropoffLocationName, opt => opt.MapFrom(src => src.DropoffLocation.Name));
+                .ForMember(dest => dest.DropoffLocationName, opt => opt.MapFrom(src => src.DropoffLocation.Name))
+                .ForMember(dest => dest.CustomerFirstname, opt => opt.MapFrom(src => src.Customer.User.Firstname))
+                .ForMember(dest => dest.CustomerLastname, opt => opt.MapFrom(src => src.Customer.User.Lastname))
+                .ForMember(dest => dest.EmployeeFirstname, opt => opt.MapFrom(src => src.Employee != null ? src.Employee.User.Firstname : null))
+                .ForMember(dest => dest.EmployeeLastname, opt => opt.MapFrom(src => src.Employee != null ? src.Employee.User.Lastname : null));
+
             CreateMap<User, UserReadOnlyDTO>()
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name));
             CreateMap<User, CustomerReadOnlyDTO>()

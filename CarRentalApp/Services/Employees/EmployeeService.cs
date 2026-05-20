@@ -40,8 +40,6 @@ namespace CarRentalApp.Services.Employees
 
             user.Employee = employee;
             user.Password = _encryptionUtil.Encrypt(user.Password);
-            user.ModifiedAt = DateTime.UtcNow;
-            employee.ModifiedAt = DateTime.UtcNow;
 
             await _unitOfWork.UserRepository.AddAsync(user);
             await _unitOfWork.SaveChanges();
