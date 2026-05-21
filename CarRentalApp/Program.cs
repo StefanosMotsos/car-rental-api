@@ -140,6 +140,12 @@ namespace CarRentalApp
 
             app.MapControllers();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<CarRentalDbContext>();
+                db.Database.Migrate();
+            }
+
             app.Run();
         }
     }
