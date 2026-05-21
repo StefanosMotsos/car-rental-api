@@ -46,7 +46,7 @@ namespace CarRentalApp.Data
 
             modelBuilder.Entity<User>(en =>
             {
-                en.Property(e => e.Uuid).HasDefaultValueSql("NEWID()");
+                en.Property(e => e.Uuid).HasDefaultValueSql("gen_random_uuid()");
                 en.Property(p => p.Username).HasMaxLength(50);
                 en.Property(p => p.Password).HasMaxLength(100);
                 en.Property(p => p.Email).HasMaxLength(50);
@@ -66,7 +66,7 @@ namespace CarRentalApp.Data
 
             modelBuilder.Entity<Customer>(en =>
             {
-                en.Property(e => e.Uuid).HasDefaultValueSql("NEWID()");
+                en.Property(e => e.Uuid).HasDefaultValueSql("gen_random_uuid()");
                 en.Property(p => p.DriverLicense).HasMaxLength(20);
                 en.Property(p => p.DateOfBirth).HasColumnType("date");
                 en.HasOne(p => p.User).WithOne(p => p.Customer)
@@ -80,7 +80,7 @@ namespace CarRentalApp.Data
 
             modelBuilder.Entity<Employee>(en =>
             {
-                en.Property(e => e.Uuid).HasDefaultValueSql("NEWID()");
+                en.Property(e => e.Uuid).HasDefaultValueSql("gen_random_uuid()");
                 en.Property(p => p.PhoneNumber).HasMaxLength(20);
                 en.HasOne(p => p.User).WithOne(p => p.Employee)
                     .HasForeignKey<Employee>(p => p.UserId)
@@ -101,7 +101,7 @@ namespace CarRentalApp.Data
 
             modelBuilder.Entity<Vehicle>(en =>
             {
-                en.Property(e => e.Uuid).HasDefaultValueSql("NEWID()");
+                en.Property(e => e.Uuid).HasDefaultValueSql("gen_random_uuid()");
                 en.Property(p => p.Make).HasMaxLength(50);
                 en.Property(p => p.Model).HasMaxLength(50);
                 en.Property(p => p.Year).HasColumnType("smallint");
@@ -123,7 +123,7 @@ namespace CarRentalApp.Data
 
             modelBuilder.Entity<VehiclePhoto>(en =>
             {
-                en.Property(e => e.Uuid).HasDefaultValueSql("NEWID()");
+                en.Property(e => e.Uuid).HasDefaultValueSql("gen_random_uuid()");
                 en.Property(p => p.OriginalName).HasMaxLength(255);
                 en.Property(p => p.SavedName).HasMaxLength(255);
                 en.Property(p => p.FilePath).HasMaxLength(1024);
@@ -152,7 +152,7 @@ namespace CarRentalApp.Data
 
             modelBuilder.Entity<Rental>(en =>
             {
-                en.Property(e => e.Uuid).HasDefaultValueSql("NEWID()");
+                en.Property(e => e.Uuid).HasDefaultValueSql("gen_random_uuid()");
                 en.Property(p => p.StartDate).HasColumnType("date");
                 en.Property(p => p.EndDate).HasColumnType("date");
                 en.Property(p => p.TotalCost).HasColumnType("decimal(10,2)");

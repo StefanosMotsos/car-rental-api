@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -15,10 +16,10 @@ namespace CarRentalApp.Migrations
                 name: "Capabilities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,10 +30,10 @@ namespace CarRentalApp.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -43,12 +44,12 @@ namespace CarRentalApp.Migrations
                 name: "Locations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Address = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    City = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Phone = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,9 +60,9 @@ namespace CarRentalApp.Migrations
                 name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -72,19 +73,21 @@ namespace CarRentalApp.Migrations
                 name: "Vehicles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Model = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Make = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Model = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Year = table.Column<short>(type: "smallint", nullable: false),
-                    LicensePlate = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    DailyRate = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    TierType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    InsertedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    isDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    LicensePlate = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    DailyRate = table.Column<decimal>(type: "numeric(10,2)", nullable: false),
+                    TierType = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    CategoryId = table.Column<int>(type: "integer", nullable: false),
+                    InsertedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    Uuid = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()")
                 },
                 constraints: table =>
                 {
@@ -101,8 +104,8 @@ namespace CarRentalApp.Migrations
                 name: "RolesCapabilities",
                 columns: table => new
                 {
-                    CapabilitiesId = table.Column<int>(type: "int", nullable: false),
-                    RolesId = table.Column<int>(type: "int", nullable: false)
+                    CapabilitiesId = table.Column<int>(type: "integer", nullable: false),
+                    RolesId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -125,18 +128,19 @@ namespace CarRentalApp.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Firstname = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Lastname = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    InsertedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    isDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Username = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Password = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Firstname = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Lastname = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    RoleId = table.Column<int>(type: "integer", nullable: false),
+                    InsertedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    Uuid = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()")
                 },
                 constraints: table =>
                 {
@@ -153,18 +157,19 @@ namespace CarRentalApp.Migrations
                 name: "VehiclePhotos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OriginalName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    SavedName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    FilePath = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
-                    ContentType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Extension = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    VehicleId = table.Column<int>(type: "int", nullable: false),
-                    InsertedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    isDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    OriginalName = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    SavedName = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    FilePath = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: false),
+                    ContentType = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Extension = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    VehicleId = table.Column<int>(type: "integer", nullable: false),
+                    InsertedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    Uuid = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()")
                 },
                 constraints: table =>
                 {
@@ -181,15 +186,16 @@ namespace CarRentalApp.Migrations
                 name: "Customers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DriverLicense = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    DriverLicense = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    InsertedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    isDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    InsertedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    Uuid = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()")
                 },
                 constraints: table =>
                 {
@@ -206,14 +212,15 @@ namespace CarRentalApp.Migrations
                 name: "Employees",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    InsertedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    isDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PhoneNumber = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    InsertedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    Uuid = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()")
                 },
                 constraints: table =>
                 {
@@ -230,21 +237,22 @@ namespace CarRentalApp.Migrations
                 name: "Rentals",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    TotalCost = table.Column<decimal>(type: "decimal(10,2)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: true),
-                    VehicleId = table.Column<int>(type: "int", nullable: false),
-                    PickupLocationId = table.Column<int>(type: "int", nullable: false),
-                    DropoffLocationId = table.Column<int>(type: "int", nullable: false),
-                    InsertedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    isDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    TotalCost = table.Column<decimal>(type: "numeric(10,2)", nullable: true),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    CustomerId = table.Column<int>(type: "integer", nullable: false),
+                    EmployeeId = table.Column<int>(type: "integer", nullable: true),
+                    VehicleId = table.Column<int>(type: "integer", nullable: false),
+                    PickupLocationId = table.Column<int>(type: "integer", nullable: false),
+                    DropoffLocationId = table.Column<int>(type: "integer", nullable: false),
+                    InsertedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    Uuid = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()")
                 },
                 constraints: table =>
                 {
@@ -322,6 +330,12 @@ namespace CarRentalApp.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Employees_Uuid",
+                table: "Employees",
+                column: "Uuid",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Locations_Name",
                 table: "Locations",
                 column: "Name");
@@ -350,6 +364,12 @@ namespace CarRentalApp.Migrations
                 name: "IX_Rentals_Status",
                 table: "Rentals",
                 column: "Status");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rentals_Uuid",
+                table: "Rentals",
+                column: "Uuid",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rentals_VehicleId",
@@ -390,6 +410,18 @@ namespace CarRentalApp.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Users_Uuid",
+                table: "Users",
+                column: "Uuid",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VehiclePhotos_Uuid",
+                table: "VehiclePhotos",
+                column: "Uuid",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_VehiclePhotos_VehicleId",
                 table: "VehiclePhotos",
                 column: "VehicleId",
@@ -410,6 +442,12 @@ namespace CarRentalApp.Migrations
                 name: "IX_Vehicles_Status",
                 table: "Vehicles",
                 column: "Status");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vehicles_Uuid",
+                table: "Vehicles",
+                column: "Uuid",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "UQ_Vehicles_LicensePlate",

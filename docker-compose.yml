@@ -1,16 +1,17 @@
 services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+  postgres:
+    image: postgres:17
     container_name: carrentalapi-db
     environment:
-      ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: "${SA_PASSWORD:-YourDefaultPassword}"
+      POSTGRES_USER: "CRStef"
+      POSTGRES_PASSWORD: "Cod1ngFa"
+      POSTGRES_DB: "CarRentalDB"
     ports:
-      - "${DB_PORT:-1436}:1433"
+      - "${DB_PORT:-5432}:5432"
     volumes:
-      - sqlserver-data:/var/opt/mssql
+      - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$${MSSQL_SA_PASSWORD}" -C -Q "SELECT 1"
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-CRStef} -d ${DB_NAME:-CarRentalDB}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -28,10 +29,10 @@ services:
       Cors__Origin: "${CORS_ORIGIN:-http://localhost:3000}"
       AllowedHosts: "${ALLOWED_HOSTS:-*}"
       ASPNETCORE_ENVIRONMENT: "${ASPNETCORE_ENVIRONMENT:-Production}"
-      ConnectionStrings__DevConnection: "Server=${DB_HOST};Database=${DB_NAME};User=${DB_USER};Password=${DB_USER_PASSWORD};MultipleActiveResultSets=true;TrustServerCertificate=True"
+      ConnectionStrings__DevConnection: "Host=${DB_HOST};Database=${DB_NAME};Username=${DB_USER};Password=${DB_USER_PASSWORD}"
     depends_on:   
-      sqlserver:
+      postgres:
         condition: service_healthy
 
 volumes:
-  sqlserver-data:
+  postgres-data:

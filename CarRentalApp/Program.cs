@@ -29,7 +29,10 @@ namespace CarRentalApp
             var connString = builder.Configuration.GetConnectionString("DevConnection");
 
             builder.Services.AddDbContext<CarRentalDbContext>(options =>
-                    options.UseSqlServer(connString));
+                    options.UseNpgsql(connString));
+
+            // Fix DateOnly/DateTime UTC handling with Npgsql
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             builder.Services.AddCors(options =>
             {

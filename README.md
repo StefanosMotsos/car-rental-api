@@ -1,6 +1,6 @@
 # Motsos Car Rentals API
 
-A RESTful Car Rental backend built with **ASP.NET Core 10** and **SQL Server**. It covers the full rental lifecycle — from customer self-registration through vehicle browsing, rental requests, employee approval/rejection, and return — with role-based access control, structured logging, and Docker deployment.
+A RESTful Car Rental backend built with **ASP.NET Core 10** and **PostgreSQL**. It covers the full rental lifecycle — from customer self-registration through vehicle browsing, rental requests, employee approval/rejection, and return — with role-based access control, structured logging, and Docker deployment.
 
 ---
 
@@ -9,7 +9,7 @@ A RESTful Car Rental backend built with **ASP.NET Core 10** and **SQL Server**. 
 | Concern | Library / Tool |
 |---|---|
 | Framework | ASP.NET Core 10 (Minimal hosting model) |
-| ORM | Entity Framework Core 10 — SQL Server provider |
+| ORM | Entity Framework Core 10 — PostgreSQL provider (Npgsql) |
 | Authentication | JWT Bearer (`Microsoft.AspNetCore.Authentication.JwtBearer 10`) |
 | Password hashing | BCrypt.Net-Next 4 |
 | Object mapping | AutoMapper 16 |
@@ -213,7 +213,7 @@ Serilog is used throughout. The **`MDCLoggingMiddleware`** enriches every log en
 ### Prerequisites
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)
-- SQL Server 2022, or Docker (to run the full stack)
+- PostgreSQL 17, or Docker (to run the full stack)
 
 ### Local development (no Docker)
 
@@ -231,13 +231,13 @@ Serilog is used throughout. The **`MDCLoggingMiddleware`** enriches every log en
 ### Docker Compose (full stack)
 
 1. Copy `.env.example` to `.env` and set all required values (see the table below).
-2. Start both the SQL Server container and the API:
+2. Start both the PostgreSQL container and the API:
    ```bash
    docker compose up --build
    ```
    The API is available on the port defined by `APP_PORT` (default **8081**).
 
-> The `webapp` service waits for the SQL Server health check to pass before starting. EF Core migrations run automatically on startup.
+> The `webapp` service waits for the PostgreSQL health check to pass before starting. EF Core migrations run automatically on startup.
 
 ---
 
@@ -246,12 +246,11 @@ Serilog is used throughout. The **`MDCLoggingMiddleware`** enriches every log en
 | Variable | Required | Default | Description |
 |---|---|---|---|
 | `JWT_SECRET` | Yes | — | HS256 signing key — use a long random string |
-| `JWT_ISSUER` | No | `http://localhost:8081` | `iss` claim in the token |
+| `JWT_ISSUER` | No | `https://localhost:8081` | `iss` claim in the token |
 | `JWT_AUDIENCE` | No | `https://localhost:8081` | `aud` claim in the token |
 | `CORS_ORIGIN` | No | `http://localhost:3000` | Allowed frontend origin |
-| `SA_PASSWORD` | Yes | — | SQL Server SA password (Docker only) |
-| `DB_HOST` | No | `sqlserver` | SQL Server hostname |
-| `DB_PORT` | No | `1436` | Host port mapped to SQL Server's 1433 |
+| `DB_HOST` | No | `postgres` | PostgreSQL hostname |
+| `DB_PORT` | No | `5432` | Host port mapped to PostgreSQL's 5432 |
 | `DB_NAME` | No | `CarRentalDB` | Target database name |
 | `DB_USER` | Yes | — | Application database user |
 | `DB_USER_PASSWORD` | Yes | — | Application database user password |
