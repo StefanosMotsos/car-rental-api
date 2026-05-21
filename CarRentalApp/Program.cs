@@ -111,6 +111,13 @@ namespace CarRentalApp
 
             var app = builder.Build();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<CarRentalDbContext>();
+                db.Database.Migrate();
+            }
+            app.MapGet("/health", () => Results.Ok());
+
             app.UseExceptionHandler();
             app.UseSerilogRequestLogging();
 
@@ -139,12 +146,6 @@ namespace CarRentalApp
 
 
             app.MapControllers();
-
-            using (var scope = app.Services.CreateScope())
-            {
-                var db = scope.ServiceProvider.GetRequiredService<CarRentalDbContext>();
-                db.Database.Migrate();
-            }
 
             app.Run();
         }
