@@ -7,7 +7,7 @@ namespace CarRentalApp.Services.Rentals
     public interface IRentalService
     {
         Task<RentalReadOnlyDTO> CreateRentalAsync(RentalCreateDTO dto, int callerUserId);
-        Task<RentalReadOnlyDTO> UpdateRentalAsync(RentalUpdateDTO dto, Guid uuid);
+        Task<RentalReadOnlyDTO> UpdateRentalAsync(RentalUpdateDTO dto, Guid uuid, int callerUserId, string callerRole);
         Task<PaginatedResult<RentalReadOnlyDTO>> CustomerRentalHistoryAsync(int callerUserId,
             int pageNumber, int pageSize, RentalFiltersDTO filters);
         Task<PaginatedResult<RentalReadOnlyDTO>> GetPaginatedFilteredRentalsAsync(int pageNumber, int pageSize, RentalFiltersDTO filters);

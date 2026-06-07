@@ -56,7 +56,7 @@ namespace CarRentalApp.Services.Rentals
             return _mapper.Map<RentalReadOnlyDTO>(rental);
         }
 
-        public async Task<RentalReadOnlyDTO> UpdateRentalAsync(RentalUpdateDTO dto, Guid uuid)
+        public async Task<RentalReadOnlyDTO> UpdateRentalAsync(RentalUpdateDTO dto, Guid uuid, int callerUserId, string callerRole)
         {
             Rental? rental = await _unitOfWork.RentalRepository.GetByUuidAsync(uuid);
             if (rental == null)
@@ -65,14 +65,16 @@ namespace CarRentalApp.Services.Rentals
                 throw new EntityNotFoundException("Rental", ErrorMessages.NotFound);
             }
 
-            if (dto.EmployeeUuid == null)
-                throw new InvalidArgumentException("Rental", ErrorMessages.InvalidArgument);
-
-            Employee? employee = await _unitOfWork.EmployeeRepository.GetByUuidAsync(dto.EmployeeUuid!.Value);
-            if (employee == null || employee.IsDeleted)
+            if (callerRole != "ADMIN")
             {
-                _logger.LogWarning("Employee with uuid {Uuid} was not found", uuid);
-                throw new EntityNotFoundException("Employee", ErrorMessages.NotFound);
+                Employee? employee = await _unitOfWork.EmployeeRepository.GetByUserIdAsync(callerUserId);
+                if (employee == null || employee.IsDeleted)
+                {
+                    _logger.LogWarning("Employee for userId {UserId} was not found", callerUserId);
+                    throw new EntityNotFoundException("Employee", ErrorMessages.NotFound);
+                }
+                rental.Employee = employee;
+                rental.EmployeeId = employee.Id;
             }
 
             if (dto.Status == RentalStatus.Rejected || dto.Status == RentalStatus.Returned)
@@ -87,8 +89,6 @@ namespace CarRentalApp.Services.Rentals
             }
 
             rental.Status = dto.Status!.Value;
-            rental.Employee = employee;
-            rental.EmployeeId = employee.Id;
             rental.ModifiedAt = DateTime.UtcNow;
 
             await _unitOfWork.SaveChanges();
@@ -128,8 +128,13 @@ namespace CarRentalApp.Services.Rentals
         public async Task<PaginatedResult<RentalReadOnlyDTO>> GetPaginatedFilteredRentalsAsync(int pageNumber, int pageSize, RentalFiltersDTO filters)
         {
             var predicates = BuildRentalPredicates(filters);
-            if (filters.CustomerUuid.HasValue) predicates.Add(r => r.Customer.Uuid == filters.CustomerUuid.Value);
-            if (filters.EmployeeUuid.HasValue) predicates.Add(r => r.Employee!.Uuid == filters.EmployeeUuid.Value);
+            if (!string.IsNullOrEmpty(filters.CustomerName))
+                predicates.Add(r => r.Customer.User.Firstname.Contains(filters.CustomerName)
+                                 || r.Customer.User.Lastname.Contains(filters.CustomerName));
+
+            if (!string.IsNullOrEmpty(filters.EmployeeName))
+                predicates.Add(r => r.Employee!.User.Firstname.Contains(filters.EmployeeName)
+                                 || r.Employee!.User.Lastname.Contains(filters.EmployeeName));
 
             PaginatedResult<Rental> result = await _unitOfWork.RentalRepository.GetPaginatedFilteredRentalsAsync(pageNumber, pageSize, predicates);
 
@@ -213,11 +218,12 @@ namespace CarRentalApp.Services.Rentals
             List<Expression<Func<Rental, bool>>> predicates = [];
 
             if (filters.Status.HasValue) predicates.Add(r => r.Status == filters.Status.Value);
-            if (filters.VehicleUuid.HasValue) predicates.Add(r => r.Vehicle.Uuid == filters.VehicleUuid.Value);
-            if (filters.StartDateFrom.HasValue) predicates.Add(r => r.StartDate >= filters.StartDateFrom.Value);
-            if (filters.StartDateTo.HasValue) predicates.Add(r => r.StartDate <= filters.StartDateTo.Value);
             if (filters.MinTotalCost.HasValue) predicates.Add(r => r.TotalCost >= filters.MinTotalCost.Value);
             if (filters.MaxTotalCost.HasValue) predicates.Add(r => r.TotalCost <= filters.MaxTotalCost.Value);
+
+            if (!string.IsNullOrEmpty(filters.Search))
+                predicates.Add(r => r.Vehicle.Make.ToLower().Contains(filters.Search.ToLower())
+                                 || r.Vehicle.Model.ToLower().Contains(filters.Search.ToLower()));
 
             return predicates;
         }

@@ -3,7 +3,6 @@ using CarRentalApp.Core.Filters;
 using CarRentalApp.DTO.Rental;
 using CarRentalApp.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -48,8 +47,9 @@ namespace CarRentalApp.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<RentalReadOnlyDTO>> UpdateRental(Guid uuid, [FromBody] RentalUpdateDTO dto)
         {
-            var updatedRental = await _applicationService.RentalService.UpdateRentalAsync(dto, uuid);
-
+            int callerUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            string callerRole = User.FindFirstValue(ClaimTypes.Role)!;
+            var updatedRental = await _applicationService.RentalService.UpdateRentalAsync(dto, uuid, callerUserId, callerRole);
             return Ok(updatedRental);
         }
 
