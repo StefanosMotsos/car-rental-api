@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarRentalApp.Controllers
 {
-    [Route("api/v1/locations")]
+    [Route("api/v1/lookup")]
     [ApiController]
-    public class LocationsController : ControllerBase
+    public class LookupController : ControllerBase
     {
 
         private readonly IApplicationService _applicationService;
 
-        public LocationsController(IApplicationService applicationService)
+        public LookupController(IApplicationService applicationService)
         {
             _applicationService = applicationService;
         }
@@ -21,7 +21,7 @@ namespace CarRentalApp.Controllers
         /// <summary>
         /// Get all Locations.
         /// </summary>
-        [HttpGet]
+        [HttpGet("locations")]
         [Authorize]
         [ProducesResponseType(typeof (List<LocationReadOnlyDTO>), StatusCodes.Status200OK)]
         public async Task<ActionResult<List<LocationReadOnlyDTO>>> GetLocations()
@@ -29,6 +29,20 @@ namespace CarRentalApp.Controllers
             var locations = await _applicationService.LookupService.GetAllLocationsAsync();
 
             return Ok(locations);
+        }
+
+
+        /// <summary>
+        /// Get all Categories
+        /// </summary>
+        [HttpGet("categories")]
+        [Authorize]
+        [ProducesResponseType(typeof (List<CategoryReadOnlyDTO>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<CategoryReadOnlyDTO>>> GetCategories()
+        {
+            var categories = await _applicationService.LookupService.GetAllCategoriesAsync();
+
+            return Ok(categories);
         }
     }
 }

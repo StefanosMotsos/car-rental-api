@@ -30,7 +30,7 @@ namespace CarRentalApp.Controllers
         [ProducesResponseType(typeof (PaginatedResult<VehicleReadOnlyDTO>), StatusCodes.Status200OK)]
         public async Task<ActionResult<PaginatedResult<VehicleReadOnlyDTO>>> GetVehicles(
             [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10,
+            [FromQuery] int pageSize = 12,
             [FromQuery] VehicleFiltersDTO? filters = null)
         {
             string callerRole = User.FindFirstValue(ClaimTypes.Role)!;

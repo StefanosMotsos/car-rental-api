@@ -57,16 +57,16 @@ namespace CarRentalApp.Controllers
         /// <summary>
         /// Update the authenticated Customer's profile.
         /// </summary>
-        [HttpPut("{uuid}")]
+        [HttpPut("me")]
         [Authorize(Roles = "CUSTOMER")]
         [ProducesResponseType(typeof(CustomerReadOnlyDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<ActionResult<CustomerReadOnlyDTO>> UpdateCustomer(Guid uuid, [FromBody] CustomerUpdateDTO dto)
+        public async Task<ActionResult<CustomerReadOnlyDTO>> UpdateCustomer([FromBody] CustomerUpdateDTO dto)
         {
             int callerUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            var updatedCustomer = await _applicationService.CustomerService.UpdateCustomerAsync(uuid, dto, callerUserId);
+            var updatedCustomer = await _applicationService.CustomerService.UpdateCustomerAsync(dto, callerUserId);
             return Ok(updatedCustomer);
         }
 
