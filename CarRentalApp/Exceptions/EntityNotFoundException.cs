@@ -5,7 +5,7 @@
 
         private static readonly string DEFAULT_CODE = "NotFound";
 
-        public EntityNotFoundException(string code, string message) : base(code + DEFAULT_CODE, message)
+        public EntityNotFoundException(string entity, string message) : base(entity + DEFAULT_CODE, string.Format(message, entity))
         {
         }
     }

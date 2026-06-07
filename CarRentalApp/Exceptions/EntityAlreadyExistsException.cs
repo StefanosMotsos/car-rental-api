@@ -5,7 +5,8 @@
 
         private static readonly string DEFAULT_CODE = "AlreadyExists";
 
-        public EntityAlreadyExistsException(string code, string message) : base(code + DEFAULT_CODE, message)
+        public EntityAlreadyExistsException(string entity, string message)
+            : base(entity + DEFAULT_CODE, string.Format(message, entity))
         {
         }
     }
