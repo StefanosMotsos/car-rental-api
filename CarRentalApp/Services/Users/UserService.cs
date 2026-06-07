@@ -53,9 +53,9 @@ namespace CarRentalApp.Services.Users
         {
             List<Expression<Func<User, bool>>> predicates = [];
 
-            if (!string.IsNullOrEmpty(filters.UserName))
+            if (!string.IsNullOrEmpty(filters.Username))
             {
-                predicates.Add(u => u.Username == filters.UserName);
+                predicates.Add(u => u.Username == filters.Username);
             }
             if (!string.IsNullOrEmpty(filters.Email))
             {
