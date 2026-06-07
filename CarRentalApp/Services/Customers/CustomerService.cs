@@ -49,20 +49,16 @@ namespace CarRentalApp.Services.Customers
             return _mapper.Map<CustomerReadOnlyDTO>(user);
         }
 
-        public async Task<CustomerReadOnlyDTO> UpdateCustomerAsync(Guid uuid, CustomerUpdateDTO dto, int callerUserId)
+        public async Task<CustomerReadOnlyDTO> UpdateCustomerAsync(CustomerUpdateDTO dto, int callerUserId)
         {
-            Customer? customer = await _unitOfWork.CustomerRepository.GetByUuidAsync(uuid);
-            if (customer is null || customer.IsDeleted)
+            User? user = await _unitOfWork.UserRepository.GetUserCustomerByIdAsync(callerUserId);
+            if (user == null || user.Customer == null || user.Customer.IsDeleted)
             {
-                _logger.LogWarning("Customer with uuid {Uuid} was not found", uuid);
+                _logger.LogWarning("Customer with userId {UserId} was not found", callerUserId);
                 throw new EntityNotFoundException("Customer", ErrorMessages.NotFound);
             }
 
-            if (callerUserId != customer.UserId)
-            {
-                _logger.LogWarning("Customer with id {CallerUserId} is not allowed to access this service", callerUserId);
-                throw new EntityForbiddenException("Customer", ErrorMessages.Forbidden);
-            }
+            Customer customer = user.Customer;
 
             await ValidateCustomerUpdateAsync(dto, customer);
 
@@ -74,7 +70,7 @@ namespace CarRentalApp.Services.Customers
             customer.ModifiedAt = DateTime.UtcNow;
             await _unitOfWork.SaveChanges();
 
-            _logger.LogInformation("Customer with uuid {Uuid} was updated successfully!", uuid);
+            _logger.LogInformation("Customer with userId {UserId} was updated successfully!", callerUserId);
             return _mapper.Map<CustomerReadOnlyDTO>(customer.User);
         }
 
@@ -186,14 +182,14 @@ namespace CarRentalApp.Services.Customers
             if (existingEmail is not null)
             {
                 _logger.LogWarning("User with email {Email} already exists", dto.Email);
-                throw new EntityAlreadyExistsException("User", ErrorMessages.AlreadyExists);
+                throw new EntityAlreadyExistsException("Email", ErrorMessages.AlreadyExists);
             }
 
             Customer? existingLicense = await _unitOfWork.CustomerRepository.GetCustomerByDriverLicenseAsync(dto.DriverLicense!);
             if (existingLicense is not null)
             {
                 _logger.LogWarning("Customer with driver license {DriverLicense} already exists", dto.DriverLicense);
-                throw new EntityAlreadyExistsException("Customer", ErrorMessages.AlreadyExists);
+                throw new EntityAlreadyExistsException("License", ErrorMessages.AlreadyExists);
             }
 
             ValidateAge(dto.DateOfBirth!.Value);

@@ -168,7 +168,7 @@ namespace CarRentalApp.Services.Employees
             if (existingEmail != null)
             {
                 _logger.LogWarning("Employee with email {Email} already exists", dto.Email);
-                throw new EntityAlreadyExistsException("Employee", ErrorMessages.AlreadyExists);
+                throw new EntityAlreadyExistsException("Email", ErrorMessages.AlreadyExists);
             }
         }
 
@@ -181,7 +181,7 @@ namespace CarRentalApp.Services.Employees
                 if (existingUser != null)
                 {
                     _logger.LogWarning("Employee with username {Username} already exists", dto.Username);
-                    throw new EntityAlreadyExistsException("Employee", ErrorMessages.AlreadyExists);
+                    throw new EntityAlreadyExistsException("User", ErrorMessages.AlreadyExists);
                 }
             }
 
@@ -191,7 +191,7 @@ namespace CarRentalApp.Services.Employees
                 if (existingEmail != null)
                 {
                     _logger.LogWarning("Employee with email {Email} already exists", dto.Email);
-                    throw new EntityAlreadyExistsException("Employee", ErrorMessages.AlreadyExists);
+                    throw new EntityAlreadyExistsException("Email", ErrorMessages.AlreadyExists);
                 }
             }
         }

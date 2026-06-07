@@ -53,5 +53,13 @@ namespace CarRentalApp.Repositories.Employees
                     .ThenInclude(u => u.Role)
                 .FirstOrDefaultAsync(c => c.Uuid == uuid);
         }
+
+        public async Task<Employee?> GetByUserIdAsync(int userId)
+        {
+            return await _dbSet
+                .Include(e => e.User)
+                    .ThenInclude(u => u.Role)
+                .FirstOrDefaultAsync(e => e.UserId == userId);
+        }
     }
 }

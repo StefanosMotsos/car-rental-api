@@ -9,7 +9,5 @@ namespace CarRentalApp.DTO.Rental
          [Required(ErrorMessageResourceType = typeof(ErrorMessages),
              ErrorMessageResourceName = "Required")]
          public RentalStatus? Status { get; set; }
-
-         public Guid? EmployeeUuid { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace CarRentalApp.Services.Customers
     public interface ICustomerService
     {
         Task<CustomerReadOnlyDTO> SignupCustomerAsync(CustomerSignupDTO dto);
-        Task<CustomerReadOnlyDTO> UpdateCustomerAsync(Guid uuid, CustomerUpdateDTO dto, int callerUserId);
+        Task<CustomerReadOnlyDTO> UpdateCustomerAsync(CustomerUpdateDTO dto, int callerUserId);
         Task<bool> DeleteCustomerByUuidAsync(Guid uuid);
 
         Task<CustomerReadOnlyDTO> GetCustomerByUuidAsync(Guid uuid);

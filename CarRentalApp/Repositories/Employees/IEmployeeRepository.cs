@@ -9,5 +9,8 @@ namespace CarRentalApp.Repositories.Employees
     {
         Task<PaginatedResult<Employee>> GetPaginatedFilteredEmployeesAsync(int pageNumber, int pageSize,
             List<Expression<Func<Employee, bool>>> predicates);
+
+        Task<Employee?> GetByUserIdAsync(int userId);
     }
+
 }
