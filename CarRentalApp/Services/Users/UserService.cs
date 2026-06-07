@@ -102,11 +102,11 @@ namespace CarRentalApp.Services.Users
 
             var claimsInfo = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role.Name),
-                new Claim("uuid", user.Uuid.ToString())
+                new Claim("nameid", user.Id.ToString()),
+                new Claim("unique_name", user.Username),
+                new Claim("email", user.Email),
+                new Claim("role", user.Role.Name),
+                new Claim("uuid", user.Uuid.ToString()),
             };
 
             var jwtSecurityToken = new JwtSecurityToken(
