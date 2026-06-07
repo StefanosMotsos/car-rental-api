@@ -91,7 +91,7 @@ namespace CarRentalApp.Services.Vehicles
                 {
                     OriginalName = originalName,
                     SavedName = savedName,
-                    FilePath = filePath,
+                    FilePath = $"/uploads/vehicles/{savedName}",
                     ContentType = contentType,
                     Extension = extension,
                     VehicleId = vehicle.Id
@@ -205,6 +205,7 @@ namespace CarRentalApp.Services.Vehicles
             VehicleFiltersDTO filters)
         {
             var predicates = BuildVehiclePredicates(filters);
+            predicates.Add(v => !v.IsDeleted);
             if (filters.Status.HasValue) predicates.Add(v => v.Status == filters.Status.Value);
 
             PaginatedResult<Vehicle> result = await _unitOfWork.VehicleRepository.GetPaginatedFilteredVehiclesAsync(pageNumber, pageSize, predicates);
@@ -226,7 +227,7 @@ namespace CarRentalApp.Services.Vehicles
             List<Expression<Func<Vehicle, bool>>> predicates = [];
 
             if (!string.IsNullOrEmpty(filters.Search))
-                predicates.Add(v => v.Make.Contains(filters.Search) || v.Model.Contains(filters.Search));
+                predicates.Add(v => v.Make.ToLower().Contains(filters.Search.ToLower()) || v.Model.ToLower().Contains(filters.Search.ToLower()));
 
             if (!string.IsNullOrEmpty(filters.LicensePlate)) predicates.Add(v => v.LicensePlate.Contains(filters.LicensePlate));
             if (!string.IsNullOrEmpty(filters.Make)) predicates.Add(v => v.Make == filters.Make);

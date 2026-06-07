@@ -6,9 +6,11 @@ using CarRentalApp.Security;
 using CarRentalApp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -139,9 +141,15 @@ namespace CarRentalApp
                        .AddSupportedUICultures(supportedCultures);
             });
 
+            app.UseCors("AllowClient");
             app.UseHttpsRedirection();
 
-            app.UseCors("AllowClient");
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(builder.Environment.ContentRootPath, "uploads/vehicles")),
+                    RequestPath = "/uploads/vehicles"
+            });
 
             app.UseAuthentication();
             app.UseMiddleware<MDCLoggingMiddleware>();
