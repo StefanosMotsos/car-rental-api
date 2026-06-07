@@ -144,11 +144,13 @@ namespace CarRentalApp
             app.UseCors("AllowClient");
             app.UseHttpsRedirection();
 
+            var uploadsPath = Path.Combine(app.Environment.ContentRootPath, "uploads", "vehicles");
+            Directory.CreateDirectory(uploadsPath);
+
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(builder.Environment.ContentRootPath, "uploads/vehicles")),
-                    RequestPath = "/uploads/vehicles"
+                FileProvider = new PhysicalFileProvider(uploadsPath),
+                RequestPath = "/uploads/vehicles"
             });
 
             app.UseAuthentication();
