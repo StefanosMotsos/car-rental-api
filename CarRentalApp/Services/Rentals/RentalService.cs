@@ -14,15 +14,13 @@ namespace CarRentalApp.Services.Rentals
 {
     public class RentalService : IRentalService
     {
-        private readonly IEncryptionUtil _encryptionUtil;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger<RentalService> _logger;
 
-        public RentalService(IEncryptionUtil encryptionUtil, IUnitOfWork unitOfWork,
+        public RentalService(IUnitOfWork unitOfWork,
             IMapper mapper, ILogger<RentalService> logger)
         {
-            _encryptionUtil = encryptionUtil;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;

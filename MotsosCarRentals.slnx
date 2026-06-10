@@ -10,4 +10,5 @@
     <File Path="README.md" />
   </Folder>
   <Project Path="CarRentalApp/CarRentalApp.csproj" />
+  <Project Path="CarRentalTests/CarRentalTests.csproj" Id="ea8e431c-ebcc-40cb-9a85-d8697593efdc" />
 </Solution>
