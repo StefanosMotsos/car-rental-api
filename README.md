@@ -1,4 +1,13 @@
-# Motsos Car Rentals API
+# Motsos Car Rentals
+
+## Live Deployments
+
+| | Link |
+|---|---|
+| **Frontend** | https://motsos-car-rentals.vercel.app/ |
+| **Backend API** | https://car-rental-api-elm2.onrender.com |
+
+---
 
 A RESTful Car Rental backend built with **ASP.NET Core 10** and **PostgreSQL**. It covers the full rental lifecycle — from customer self-registration through vehicle browsing, rental requests, employee approval/rejection, and return — with role-based access control, structured logging, and Docker deployment.
 
@@ -16,6 +25,7 @@ A RESTful Car Rental backend built with **ASP.NET Core 10** and **PostgreSQL**. 
 | Logging | Serilog — Console (compact JSON) + File sinks |
 | API documentation | Swashbuckle / Swagger UI with XML comments |
 | Containerisation | Docker (multi-stage build) + Docker Compose |
+| Testing | xUnit v3 + NSubstitute + EF Core InMemory |
 
 ---
 
@@ -205,6 +215,34 @@ All errors are returned as [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7
 ## Logging
 
 Serilog is used throughout. The **`MDCLoggingMiddleware`** enriches every log entry with the authenticated `User` and client `IP`, making per-request traces easy to follow. In Development, logs are written as compact JSON to the console. The configuration for additional sinks (e.g. file) is defined in `appsettings.json`.
+
+---
+
+## Testing
+
+The `CarRentalTests` project is an xUnit v3 test suite that covers services, repositories, and controllers.
+
+| Concern | Library |
+|---|---|
+| Test framework | xUnit v3 (`xunit.v3`) |
+| Mocking | NSubstitute 5 |
+| In-memory database | EF Core InMemory provider |
+| Coverage | coverlet.collector |
+
+**Test structure**
+
+| Folder | What is tested |
+|---|---|
+| `Services/` | `VehicleService`, `RentalService`, `CustomerService` — business logic in isolation |
+| `Repositories/` | `VehicleRepository` — EF Core queries against an in-memory database |
+| `Controller/` | `AuthController` — request/response handling |
+| `Helper/` | `TestDbContextFactory` — shared in-memory `AppDbContext` setup |
+
+**Run the tests**
+
+```bash
+dotnet test CarRentalTests
+```
 
 ---
 
